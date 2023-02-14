@@ -6,6 +6,7 @@ import {
   Typography,
   IconButton,
 } from "@mui/material";
+import Link from "next/link";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Employee } from "types";
@@ -33,9 +34,11 @@ const EmployeeGridItem = (props: EmployeeGridItemProps) => {
         </Typography>
       </CardContent>
       <CardActions className="d-flex justify-content-end">
-        <IconButton color="primary">
-          <EditIcon />
-        </IconButton>
+        <Link href={`/edit/${props.employee?.id}`}>
+          <IconButton color="primary">
+            <EditIcon />
+          </IconButton>
+        </Link>
         <IconButton color="error">
           <DeleteIcon />
         </IconButton>

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
@@ -58,11 +59,13 @@ const columns: GridColDef[] = [
     sortable: false,
     width: 160,
     disableColumnMenu: true,
-    renderCell: () => (
+    renderCell: (params) => (
       <div className="d-flex justify-content-end">
-        <IconButton color="primary">
-          <EditIcon />
-        </IconButton>
+        <Link href={`/edit/${params.row?.id}`}>
+          <IconButton color="primary">
+            <EditIcon />
+          </IconButton>
+        </Link>
         <IconButton color="error">
           <DeleteIcon />
         </IconButton>

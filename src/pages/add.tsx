@@ -1,5 +1,11 @@
+import EmployeeFormContainer from "components/EmployeeFormContainer";
+
 const AddEmployee = () => {
-  return <div>Add employee</div>;
+  return (
+    <div>
+      <EmployeeFormContainer />
+    </div>
+  );
 };
 
 export default AddEmployee;
