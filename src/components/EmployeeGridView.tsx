@@ -1,7 +1,7 @@
 import EmployeeGridItem from "./EmployeeGridItem";
 import { Employee } from "types";
 
-const EmployeeGridView = ({ employees }) => {
+const EmployeeGridView = ({ employees }: Employee[]) => {
   return (
     <div className="d-flex flex-wrap justify-content-evenly">
       {employees.map((employee: Employee) => (
