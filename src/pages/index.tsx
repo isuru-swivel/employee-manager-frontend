@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useAppSelector, useAppDispatch } from "hooks";
-import { getEmployees } from "store/thunks";
-import { RootState } from "store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchEmployees } from "features/employee/employeeSlice";
 import Link from "next/link";
 import { Button, IconButton } from "@mui/material";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
@@ -16,14 +15,12 @@ enum ViewTypes {
 
 const Home = () => {
   const [viewType, setViewType] = useState<ViewTypes>(ViewTypes.GRID_VIEW);
+  const { employees, loading } = useSelector((state) => state.employee);
 
-  const dispatch = useAppDispatch();
-  const employees = useAppSelector(
-    (state: RootState) => state.employee.employees
-  );
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getEmployees());
+    dispatch(fetchEmployees());
   }, []);
 
   const handleViewTypeChange = () => {

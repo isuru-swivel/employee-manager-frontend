@@ -1,11 +1,15 @@
 import EmployeeGridItem from "./EmployeeGridItem";
 import { Employee } from "types";
 
-const EmployeeGridView = ({ employees }: Employee[]) => {
+interface EmployeeGridViewProps {
+  employees: Employee[];
+}
+
+const EmployeeGridView = (props: EmployeeGridViewProps) => {
   return (
     <div className="d-flex flex-wrap justify-content-evenly">
-      {employees.map((employee: Employee) => (
-        <EmployeeGridItem key={employee.id} employee={employee} />
+      {props.employees?.map((employee: Employee) => (
+        <EmployeeGridItem key={employee._id} employee={employee} />
       ))}
     </div>
   );

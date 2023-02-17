@@ -4,6 +4,11 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SearchIcon from "@mui/icons-material/Search";
+import { Employee } from "../types";
+
+interface EmployeeListViewProps {
+  employees: Employee[];
+}
 
 const ColumnHeader = (headerName: string) => (
   <div>
@@ -61,7 +66,7 @@ const columns: GridColDef[] = [
     disableColumnMenu: true,
     renderCell: (params) => (
       <div className="d-flex justify-content-end">
-        <Link href={`/edit/${params.row?.id}`}>
+        <Link href={`/edit/${params.row?._id}`}>
           <IconButton color="primary">
             <EditIcon />
           </IconButton>
@@ -76,16 +81,17 @@ const columns: GridColDef[] = [
 
 const handleSort = (sort) => {};
 
-const EmployeeListView = ({ employees }) => {
+const EmployeeListView = (props: EmployeeListViewProps) => {
   return (
     <div style={{ height: 750, width: "100%" }}>
       <DataGrid
-        rows={employees}
+        rows={props.employees}
         columns={columns}
         pageSize={5}
         rowsPerPageOptions={[5]}
         onSortModelChange={handleSort}
         rowHeight={130}
+        getRowId={(row) => row._id}
       />
     </div>
   );
