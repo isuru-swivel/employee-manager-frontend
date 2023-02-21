@@ -1,17 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import { getAllEmployees } from "services/employeeService";
 
 const initialState = {
   employees: [],
   selectedEmployee: null,
   loading: false,
+  deleteConfirmation: {
+    visible: false,
+    employeeId: null,
+  },
 };
 
 export const fetchEmployees = createAsyncThunk(
   "employee/fetchEmployees",
   async () => {
-    const response = await axios.get("http://localhost:3001/api/employee");
+    const response = await getAllEmployees();
     return response.data;
   }
 );
@@ -20,12 +24,28 @@ const employeeSlice = createSlice({
   name: "employee",
   initialState,
   reducers: {
-    selectEmployee: (state, action) => {
-      return {
-        ...state,
-        selectedEmployee: action.payload,
-      };
-    },
+    selectEmployee: (state, action) => ({
+      ...state,
+      selectedEmployee: action.payload,
+    }),
+    resetSelectedEmployee: (state) => ({
+      ...state,
+      selectedEmployee: null,
+    }),
+    confirmDelete: (state, action) => ({
+      ...state,
+      deleteConfirmation: {
+        visible: true,
+        employeeId: action.payload,
+      },
+    }),
+    resetDeleteConfirm: (state, action) => ({
+      ...state,
+      deleteConfirmation: {
+        visible: false,
+        employeeId: null,
+      },
+    }),
   },
   extraReducers: (builder) => {
     builder.addCase(fetchEmployees.pending, (state) => {
@@ -43,4 +63,9 @@ const employeeSlice = createSlice({
 });
 
 export default employeeSlice.reducer;
-export const { selectEmployee } = employeeSlice.actions;
+export const {
+  selectEmployee,
+  resetSelectedEmployee,
+  confirmDelete,
+  resetDeleteConfirm,
+} = employeeSlice.actions;

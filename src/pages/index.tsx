@@ -7,6 +7,10 @@ import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import GridViewIcon from "@mui/icons-material/GridView";
 import EmployeeGridView from "components/EmployeeGridView";
 import EmployeeListView from "components/EmployeeListView";
+import DeleteConfirmationModal from "components/DeleteConfirmationModal";
+import { deleteEmployee } from "services/employeeService";
+import toast from "react-hot-toast";
+import { resetDeleteConfirm } from "features/employee/employeeSlice";
 
 enum ViewTypes {
   LIST_VIEW = "LIST_VIEW",
@@ -15,7 +19,11 @@ enum ViewTypes {
 
 const Home = () => {
   const [viewType, setViewType] = useState<ViewTypes>(ViewTypes.GRID_VIEW);
-  const { employees, loading } = useSelector((state) => state.employee);
+  const {
+    employees,
+    loading,
+    deleteConfirmation: { visible, employeeId },
+  } = useSelector((state) => state.employee);
 
   const dispatch = useDispatch();
 
@@ -31,11 +39,26 @@ const Home = () => {
     }
   };
 
+  const handleDeleteEmployee = async () => {
+    try {
+      await deleteEmployee(employeeId);
+      closeConfirm();
+      dispatch(fetchEmployees());
+      toast.success("Successfully deleted");
+    } catch (error) {
+      toast.error("Something went wrong");
+    }
+  };
+
+  const closeConfirm = () => {
+    dispatch(resetDeleteConfirm());
+  };
+
   return (
     <React.Fragment>
       <div className="d-flex justify-content-end my-4">
         <IconButton onClick={handleViewTypeChange} className="me-3">
-          {viewType === ViewTypes.GRID_VIEW ? (
+          {viewType === ViewTypes.LIST_VIEW ? (
             <GridViewIcon />
           ) : (
             <FormatListBulletedIcon />
@@ -50,6 +73,11 @@ const Home = () => {
       ) : (
         <EmployeeListView employees={employees} />
       )}
+      <DeleteConfirmationModal
+        open={visible}
+        handleSuccess={handleDeleteEmployee}
+        handleClose={closeConfirm}
+      />
     </React.Fragment>
   );
 };

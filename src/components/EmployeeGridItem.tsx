@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Card,
   CardActions,
@@ -10,36 +11,54 @@ import Link from "next/link";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Employee } from "types";
+import { useDispatch } from "react-redux";
+import { selectEmployee, confirmDelete } from "features/employee/employeeSlice";
 
 interface EmployeeGridItemProps {
   employee: Employee;
 }
 
-const EmployeeGridItem = (props: EmployeeGridItemProps) => {
+const EmployeeGridItem: React.FC<EmployeeGridItemProps> = ({ employee }) => {
+  const dispatch = useDispatch();
+
   return (
     <Card sx={{ minWidth: 300 }} className="mb-3">
-      <CardMedia sx={{ height: 210 }} image={props.employee.photo} />
+      <CardMedia
+        sx={{ height: 210 }}
+        image={
+          employee.photo ||
+          `https://ui-avatars.com/api/?name=${employee.first_name}+${employee.last_name}`
+        }
+      />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          {`${props.employee.first_name} ${props.employee.last_name}`}
+          {`${employee.first_name} ${employee.last_name}`}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          {props.employee.email}
+          {employee.email}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          {props.employee.number}
+          {employee.number}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          {props.employee.gender === "M" ? "Male" : "Female"}
+          {employee.gender === "M" ? "Male" : "Female"}
         </Typography>
       </CardContent>
       <CardActions className="d-flex justify-content-end">
-        <Link href={`/edit/${props.employee?.id}`}>
-          <IconButton color="primary">
+        <Link href={`/edit/${employee?._id}`}>
+          <IconButton
+            color="primary"
+            onClick={() => {
+              dispatch(selectEmployee(employee));
+            }}
+          >
             <EditIcon />
           </IconButton>
         </Link>
-        <IconButton color="error">
+        <IconButton
+          color="error"
+          onClick={() => dispatch(confirmDelete(employee._id))}
+        >
           <DeleteIcon />
         </IconButton>
       </CardActions>

@@ -1,3 +1,4 @@
+import React, { useEffect } from "react";
 import Link from "next/link";
 import {
   FormControl,
@@ -9,7 +10,7 @@ import {
   Button,
   TextField,
 } from "@mui/material";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import {
@@ -17,6 +18,7 @@ import {
   validatePhoneNumber,
   validateEnglishLetters,
 } from "utils/validations";
+import { Employee } from "types";
 
 const schema = yup.object({
   first_name: yup
@@ -52,16 +54,38 @@ const schema = yup.object({
   gender: yup.string(),
 });
 
-const EmployeeFormContainer = () => {
+interface EmployeeFormContainerProps {
+  employee?: Employee;
+  handleComplete: (payload: any) => void;
+}
+
+const EmployeeFormContainer: React.FC<EmployeeFormContainerProps> = ({
+  employee,
+  handleComplete,
+}) => {
   const {
+    control,
     register,
+    setValue,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm({
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data) => {};
+  useEffect(() => {
+    if (employee) {
+      setValue("first_name", employee.first_name);
+      setValue("last_name", employee.last_name);
+      setValue("email", employee.email);
+      setValue("number", employee.number);
+      setValue("gender", { id: employee.gender, name: employee.gender });
+    }
+  }, [employee]);
+
+  const onSubmit = (data: any) => {
+    if (isDirty) handleComplete(data);
+  };
 
   return (
     <div className="mt-4">
@@ -103,20 +127,26 @@ const EmployeeFormContainer = () => {
                   label="Phone"
                   error={!!errors.phone}
                   helperText={errors.phone?.message}
-                  {...register("phone")}
+                  {...register("number")}
                 />
               </FormControl>
               <FormControl fullWidth className="mt-3">
                 <InputLabel>Gender</InputLabel>
-                <Select
-                  labelId="gender"
-                  id="gender"
-                  label="Gender"
-                  {...register("gender")}
-                >
-                  <MenuItem value={"M"}>Male</MenuItem>
-                  <MenuItem value={"F"}>Female</MenuItem>
-                </Select>
+                <Controller
+                  name="gender"
+                  control={control}
+                  render={({ field }) => (
+                    <Select
+                      labelId="gender"
+                      id="gender"
+                      label="Gender"
+                      {...field}
+                    >
+                      <MenuItem value={"M"}>M</MenuItem>
+                      <MenuItem value={"F"}>F</MenuItem>
+                    </Select>
+                  )}
+                />
               </FormControl>
               <div className="d-flex justify-content-end mt-3">
                 <Button variant="contained" type="submit">
