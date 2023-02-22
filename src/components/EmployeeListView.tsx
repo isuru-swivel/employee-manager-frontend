@@ -110,11 +110,6 @@ const EmployeeListView: React.FC<EmployeeListViewProps> = ({ employees }) => {
         filterMode={"server"}
         sortingMode={"server"}
         sortingOrder={["asc", "desc"]}
-        filterModel={{
-          items: [
-            { columnField: "name", operatorValue: "contains", value: "e" },
-          ],
-        }}
       />
     </div>
   );
