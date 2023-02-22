@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { getAllEmployees } from "services/employeeService";
+import { IGetEmployees } from "../../types";
 
 const initialState = {
   employees: [],
@@ -14,8 +15,8 @@ const initialState = {
 
 export const fetchEmployees = createAsyncThunk(
   "employee/fetchEmployees",
-  async () => {
-    const response = await getAllEmployees();
+  async (filters: IGetEmployees) => {
+    const response = await getAllEmployees(filters);
     return response.data;
   }
 );

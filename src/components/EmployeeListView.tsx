@@ -4,25 +4,17 @@ import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import SearchIcon from "@mui/icons-material/Search";
 import { Employee } from "../types";
 import { useDispatch } from "react-redux";
-import { selectEmployee, confirmDelete } from "features/employee/employeeSlice";
+import {
+  selectEmployee,
+  confirmDelete,
+  fetchEmployees,
+} from "features/employee/employeeSlice";
 
 interface EmployeeListViewProps {
   employees: Employee[];
 }
-
-const ColumnHeader = (headerName: string) => (
-  <div>
-    <span>{headerName}</span>
-    <span>
-      <IconButton>
-        <SearchIcon />
-      </IconButton>
-    </span>
-  </div>
-);
 
 const EmployeeListView: React.FC<EmployeeListViewProps> = ({ employees }) => {
   const dispatch = useDispatch();
@@ -50,7 +42,6 @@ const EmployeeListView: React.FC<EmployeeListViewProps> = ({ employees }) => {
       headerName: "First name",
       width: 160,
       disableColumnMenu: true,
-      renderHeader: (params) => ColumnHeader("First name"),
     },
     { field: "last_name", headerName: "Last name", width: 160 },
     {
@@ -68,7 +59,7 @@ const EmployeeListView: React.FC<EmployeeListViewProps> = ({ employees }) => {
     {
       field: "gender",
       headerName: "Gender",
-      width: 90,
+      width: 100,
       disableColumnMenu: true,
       valueGetter: (params: GridValueGetterParams) =>
         params.row.gender === "M" ? "Male" : "Female",
@@ -102,7 +93,9 @@ const EmployeeListView: React.FC<EmployeeListViewProps> = ({ employees }) => {
     },
   ];
 
-  const handleSort = (sort) => {};
+  const handleSort = (sort: any) => {
+    dispatch(fetchEmployees(sort[0]));
+  };
 
   return (
     <div style={{ height: 750, width: "100%" }}>
@@ -114,6 +107,14 @@ const EmployeeListView: React.FC<EmployeeListViewProps> = ({ employees }) => {
         onSortModelChange={handleSort}
         rowHeight={130}
         getRowId={(row) => row._id}
+        filterMode={"server"}
+        sortingMode={"server"}
+        sortingOrder={["asc", "desc"]}
+        filterModel={{
+          items: [
+            { columnField: "name", operatorValue: "contains", value: "e" },
+          ],
+        }}
       />
     </div>
   );

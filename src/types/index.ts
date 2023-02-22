@@ -7,3 +7,8 @@ export interface Employee {
   _id: string;
   photo?: string;
 }
+
+export interface IGetEmployees {
+  field?: string;
+  sort?: string;
+}

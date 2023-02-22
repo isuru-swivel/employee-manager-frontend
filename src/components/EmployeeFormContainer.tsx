@@ -71,17 +71,24 @@ const EmployeeFormContainer: React.FC<EmployeeFormContainerProps> = ({
     formState: { errors, isDirty },
   } = useForm({
     resolver: yupResolver(schema),
+    defaultValues: {
+      first_name: employee?.first_name,
+      last_name: employee?.last_name,
+      email: employee?.email,
+      number: employee?.number,
+      gender: employee?.gender,
+    },
   });
 
-  useEffect(() => {
-    if (employee) {
-      setValue("first_name", employee.first_name);
-      setValue("last_name", employee.last_name);
-      setValue("email", employee.email);
-      setValue("number", employee.number);
-      setValue("gender", { id: employee.gender, name: employee.gender });
-    }
-  }, [employee]);
+  // useEffect(() => {
+  //   if (employee) {
+  //     setValue("first_name", employee.first_name);
+  //     setValue("last_name", employee.last_name);
+  //     setValue("email", employee.email);
+  //     setValue("number", employee.number);
+  //     setValue("gender", employee.gender);
+  //   }
+  // }, [employee]);
 
   const onSubmit = (data: any) => {
     if (isDirty) handleComplete(data);
@@ -98,7 +105,7 @@ const EmployeeFormContainer: React.FC<EmployeeFormContainerProps> = ({
         <Card className="w-50">
           <CardContent>
             <form onSubmit={handleSubmit(onSubmit)}>
-              <FormControl fullWidth sx={{ m: 1 }} variant="standard">
+              <FormControl fullWidth variant="standard" className="mb-3">
                 <TextField
                   label="First Name"
                   error={!!errors.first_name}
@@ -106,7 +113,7 @@ const EmployeeFormContainer: React.FC<EmployeeFormContainerProps> = ({
                   {...register("first_name", { required: true })}
                 />
               </FormControl>
-              <FormControl fullWidth sx={{ m: 1 }} variant="standard">
+              <FormControl fullWidth variant="standard" className="mb-3">
                 <TextField
                   label="Last Name"
                   error={!!errors.last_name}
@@ -114,7 +121,7 @@ const EmployeeFormContainer: React.FC<EmployeeFormContainerProps> = ({
                   {...register("last_name", { required: true })}
                 />
               </FormControl>
-              <FormControl fullWidth sx={{ m: 1 }} variant="standard">
+              <FormControl fullWidth variant="standard" className="mb-3">
                 <TextField
                   label="Email"
                   error={!!errors.email}
@@ -122,7 +129,7 @@ const EmployeeFormContainer: React.FC<EmployeeFormContainerProps> = ({
                   {...register("email")}
                 />
               </FormControl>
-              <FormControl fullWidth sx={{ m: 1 }} variant="standard">
+              <FormControl fullWidth variant="standard" className="mb-3">
                 <TextField
                   label="Phone"
                   error={!!errors.phone}
@@ -130,18 +137,13 @@ const EmployeeFormContainer: React.FC<EmployeeFormContainerProps> = ({
                   {...register("number")}
                 />
               </FormControl>
-              <FormControl fullWidth className="mt-3">
+              <FormControl fullWidth>
                 <InputLabel>Gender</InputLabel>
                 <Controller
                   name="gender"
                   control={control}
                   render={({ field }) => (
-                    <Select
-                      labelId="gender"
-                      id="gender"
-                      label="Gender"
-                      {...field}
-                    >
+                    <Select label="Gender" {...field}>
                       <MenuItem value={"M"}>M</MenuItem>
                       <MenuItem value={"F"}>F</MenuItem>
                     </Select>

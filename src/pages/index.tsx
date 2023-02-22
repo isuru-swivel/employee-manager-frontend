@@ -28,7 +28,12 @@ const Home = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchEmployees());
+    dispatch(
+      fetchEmployees({
+        field: "first_name",
+        sort: "asc",
+      })
+    );
   }, []);
 
   const handleViewTypeChange = () => {

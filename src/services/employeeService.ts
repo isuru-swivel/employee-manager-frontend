@@ -1,7 +1,8 @@
 import axiosInstance from "./index";
+import { IGetEmployees } from "types";
 
-export const getAllEmployees = async () => {
-  return await axiosInstance.get("/employee");
+export const getAllEmployees = async ({ field, sort }: IGetEmployees) => {
+  return await axiosInstance.get(`/employee?field=${field}&&sort=${sort}`);
 };
 
 export const addEmployee = async (payload: any) => {
