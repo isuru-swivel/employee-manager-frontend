@@ -40,7 +40,7 @@ const employeeSlice = createSlice({
         employeeId: action.payload,
       },
     }),
-    resetDeleteConfirm: (state, action) => ({
+    resetDeleteConfirm: (state) => ({
       ...state,
       deleteConfirmation: {
         visible: false,

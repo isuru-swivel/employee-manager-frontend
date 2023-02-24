@@ -11,16 +11,18 @@ import Link from "next/link";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Employee } from "types";
-import { useDispatch } from "react-redux";
-import { selectEmployee, confirmDelete } from "features/employee/employeeSlice";
 
 interface EmployeeGridItemProps {
   employee: Employee;
+  setEmployee: (emp: Employee) => void;
+  openDeleteConfirmModal: (empId: string) => void;
 }
 
-const EmployeeGridItem: React.FC<EmployeeGridItemProps> = ({ employee }) => {
-  const dispatch = useDispatch();
-
+const EmployeeGridItem: React.FC<EmployeeGridItemProps> = ({
+  employee,
+  setEmployee,
+  openDeleteConfirmModal,
+}) => {
   return (
     <Card sx={{ minWidth: 300 }} className="mb-3">
       <CardMedia
@@ -46,18 +48,13 @@ const EmployeeGridItem: React.FC<EmployeeGridItemProps> = ({ employee }) => {
       </CardContent>
       <CardActions className="d-flex justify-content-end">
         <Link href={`/edit/${employee?._id}`}>
-          <IconButton
-            color="primary"
-            onClick={() => {
-              dispatch(selectEmployee(employee));
-            }}
-          >
+          <IconButton color="primary" onClick={() => setEmployee(employee)}>
             <EditIcon />
           </IconButton>
         </Link>
         <IconButton
           color="error"
-          onClick={() => dispatch(confirmDelete(employee._id))}
+          onClick={() => openDeleteConfirmModal(employee._id)}
         >
           <DeleteIcon />
         </IconButton>

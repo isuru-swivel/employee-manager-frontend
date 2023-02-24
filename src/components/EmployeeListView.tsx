@@ -5,20 +5,20 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Employee } from "../types";
-import { useDispatch } from "react-redux";
-import {
-  selectEmployee,
-  confirmDelete,
-  fetchEmployees,
-} from "features/employee/employeeSlice";
 
 interface EmployeeListViewProps {
   employees: Employee[];
+  setEmployee: (emp: Employee) => void;
+  openDeleteConfirmModal: (empId: string) => void;
+  setEmployeeFilter: (filter: object) => void;
 }
 
-const EmployeeListView: React.FC<EmployeeListViewProps> = ({ employees }) => {
-  const dispatch = useDispatch();
-
+const EmployeeListView: React.FC<EmployeeListViewProps> = ({
+  employees,
+  setEmployee,
+  openDeleteConfirmModal,
+  setEmployeeFilter,
+}) => {
   const columns: GridColDef[] = [
     {
       field: "photo",
@@ -73,18 +73,13 @@ const EmployeeListView: React.FC<EmployeeListViewProps> = ({ employees }) => {
       renderCell: (params) => (
         <div className="d-flex justify-content-end">
           <Link href={`/edit/${params.row?._id}`}>
-            <IconButton
-              color="primary"
-              onClick={() => {
-                dispatch(selectEmployee(params.row));
-              }}
-            >
+            <IconButton color="primary" onClick={() => setEmployee(params.row)}>
               <EditIcon />
             </IconButton>
           </Link>
           <IconButton
             color="error"
-            onClick={() => dispatch(confirmDelete(params.row._id))}
+            onClick={() => openDeleteConfirmModal(params.row._id)}
           >
             <DeleteIcon />
           </IconButton>
@@ -94,7 +89,7 @@ const EmployeeListView: React.FC<EmployeeListViewProps> = ({ employees }) => {
   ];
 
   const handleSort = (sort: any) => {
-    dispatch(fetchEmployees(sort[0]));
+    setEmployeeFilter(sort[0]);
   };
 
   return (

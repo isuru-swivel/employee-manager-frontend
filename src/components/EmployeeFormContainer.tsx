@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Link from "next/link";
 import {
   FormControl,
@@ -45,7 +45,7 @@ const schema = yup.object({
       if (!value) return true;
       return validateEmail(value);
     }),
-  phone: yup
+  number: yup
     .string()
     .test("validate phone number", "Invalid phone number", (value) => {
       if (!value) return true;
@@ -66,7 +66,6 @@ const EmployeeFormContainer: React.FC<EmployeeFormContainerProps> = ({
   const {
     control,
     register,
-    setValue,
     handleSubmit,
     formState: { errors, isDirty },
   } = useForm({
@@ -79,16 +78,6 @@ const EmployeeFormContainer: React.FC<EmployeeFormContainerProps> = ({
       gender: employee?.gender,
     },
   });
-
-  // useEffect(() => {
-  //   if (employee) {
-  //     setValue("first_name", employee.first_name);
-  //     setValue("last_name", employee.last_name);
-  //     setValue("email", employee.email);
-  //     setValue("number", employee.number);
-  //     setValue("gender", employee.gender);
-  //   }
-  // }, [employee]);
 
   const onSubmit = (data: any) => {
     if (isDirty) handleComplete(data);
@@ -132,8 +121,8 @@ const EmployeeFormContainer: React.FC<EmployeeFormContainerProps> = ({
               <FormControl fullWidth variant="standard" className="mb-3">
                 <TextField
                   label="Phone"
-                  error={!!errors.phone}
-                  helperText={errors.phone?.message}
+                  error={!!errors.number}
+                  helperText={errors.number?.message}
                   {...register("number")}
                 />
               </FormControl>
