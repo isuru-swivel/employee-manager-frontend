@@ -10,7 +10,12 @@ import EmployeeListView from "components/EmployeeListView";
 import DeleteConfirmationModal from "components/DeleteConfirmationModal";
 import { deleteEmployee } from "services/employeeService";
 import toast from "react-hot-toast";
-import { resetDeleteConfirm } from "features/employee/employeeSlice";
+import {
+  confirmDelete,
+  selectEmployee,
+  resetDeleteConfirm,
+} from "features/employee/employeeSlice";
+import { Employee } from "../types";
 
 enum ViewTypes {
   LIST_VIEW = "LIST_VIEW",
@@ -19,6 +24,11 @@ enum ViewTypes {
 
 const Home = () => {
   const [viewType, setViewType] = useState<ViewTypes>(ViewTypes.GRID_VIEW);
+  const [employeeFilter, setEmployeeFilter] = useState({
+    field: "first_name",
+    sort: "asc",
+  });
+
   const {
     employees,
     loading,
@@ -28,13 +38,8 @@ const Home = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(
-      fetchEmployees({
-        field: "first_name",
-        sort: "asc",
-      })
-    );
-  }, []);
+    dispatch(fetchEmployees(employeeFilter));
+  }, [employeeFilter]);
 
   const handleViewTypeChange = () => {
     if (viewType === ViewTypes.GRID_VIEW) {
@@ -48,11 +53,19 @@ const Home = () => {
     try {
       await deleteEmployee(employeeId);
       closeConfirm();
-      dispatch(fetchEmployees());
+      dispatch(fetchEmployees({}));
       toast.success("Successfully deleted");
     } catch (error) {
       toast.error("Something went wrong");
     }
+  };
+
+  const setEmployee = (emp: Employee) => {
+    dispatch(selectEmployee(emp));
+  };
+
+  const openDeleteConfirmModal = (empId: string) => {
+    dispatch(confirmDelete(empId));
   };
 
   const closeConfirm = () => {
@@ -74,9 +87,18 @@ const Home = () => {
         </Link>
       </div>
       {viewType === ViewTypes.GRID_VIEW ? (
-        <EmployeeGridView employees={employees} />
+        <EmployeeGridView
+          employees={employees}
+          setEmployee={setEmployee}
+          openDeleteConfirmModal={openDeleteConfirmModal}
+        />
       ) : (
-        <EmployeeListView employees={employees} />
+        <EmployeeListView
+          employees={employees}
+          setEmployee={setEmployee}
+          openDeleteConfirmModal={openDeleteConfirmModal}
+          setEmployeeFilter={setEmployeeFilter}
+        />
       )}
       <DeleteConfirmationModal
         open={visible}
