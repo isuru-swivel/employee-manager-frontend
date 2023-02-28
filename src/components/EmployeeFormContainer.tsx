@@ -17,8 +17,8 @@ import {
   validateEmail,
   validatePhoneNumber,
   validateEnglishLetters,
-} from "utils/validations";
-import { Employee } from "types";
+} from "@/utils/validations";
+import { Employee } from "@/types";
 
 const schema = yup.object({
   first_name: yup

@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchEmployees } from "features/employee/employeeSlice";
+import { fetchEmployees } from "@/features/employee/employeeSlice";
 import Link from "next/link";
 import { Button, IconButton } from "@mui/material";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import GridViewIcon from "@mui/icons-material/GridView";
-import EmployeeGridView from "components/EmployeeGridView";
-import EmployeeListView from "components/EmployeeListView";
-import DeleteConfirmationModal from "components/DeleteConfirmationModal";
-import { deleteEmployee } from "services/employeeService";
+import EmployeeGridView from "@/components/EmployeeGridView";
+import EmployeeListView from "@/components/EmployeeListView";
+import DeleteConfirmationModal from "@/components/DeleteConfirmationModal";
+import { deleteEmployee } from "@/services/employeeService";
 import toast from "react-hot-toast";
 import {
   confirmDelete,
   selectEmployee,
   resetDeleteConfirm,
-} from "features/employee/employeeSlice";
-import { Employee } from "../types";
+} from "@/features/employee/employeeSlice";
+import { Employee } from "@/types";
 
 enum ViewTypes {
   LIST_VIEW = "LIST_VIEW",

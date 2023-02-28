@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { getAllEmployees } from "services/employeeService";
-import { IGetEmployees } from "../../types";
+import { getAllEmployees } from "@/services/employeeService";
+import { IGetEmployees } from "@/types";
 
 const initialState = {
   employees: [],

@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-import EmployeeFormContainer from "components/EmployeeFormContainer";
-import { editEmployee } from "services/employeeService";
+import EmployeeFormContainer from "@/components/EmployeeFormContainer";
+import { editEmployee } from "@/services/employeeService";
 import toast from "react-hot-toast";
-import { resetSelectedEmployee } from "features/employee/employeeSlice";
+import { resetSelectedEmployee } from "@/features/employee/employeeSlice";
 
 const EditEmployee = () => {
   const router = useRouter();
@@ -17,7 +17,7 @@ const EditEmployee = () => {
     return () => dispatch(resetSelectedEmployee());
   }, []);
 
-  const updateEmployee = async (payload) => {
+  const updateEmployee = async (payload: any) => {
     try {
       await editEmployee(id, payload);
       await router.push("/");
