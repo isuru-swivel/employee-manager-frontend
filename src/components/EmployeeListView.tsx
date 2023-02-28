@@ -43,7 +43,12 @@ const EmployeeListView: React.FC<EmployeeListViewProps> = ({
       width: 160,
       disableColumnMenu: true,
     },
-    { field: "last_name", headerName: "Last name", width: 160 },
+    {
+      field: "last_name",
+      headerName: "Last name",
+      width: 160,
+      disableColumnMenu: true,
+    },
     {
       field: "email",
       headerName: "Email",
