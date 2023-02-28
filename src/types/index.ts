@@ -4,6 +4,11 @@ export interface Employee {
   email: string;
   number: string;
   gender: string;
-  id: string;
+  _id: string;
   photo?: string;
+}
+
+export interface IGetEmployees {
+  field?: string;
+  sort?: string;
 }
