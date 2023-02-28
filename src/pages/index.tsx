@@ -53,7 +53,7 @@ const Home = () => {
     try {
       await deleteEmployee(employeeId);
       closeConfirm();
-      dispatch(fetchEmployees({}));
+      dispatch(fetchEmployees(employeeFilter));
       toast.success("Successfully deleted");
     } catch (error) {
       toast.error("Something went wrong");
