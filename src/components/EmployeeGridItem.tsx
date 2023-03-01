@@ -10,7 +10,7 @@ import {
 import Link from "next/link";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Employee } from "types";
+import { Employee } from "@/types";
 
 interface EmployeeGridItemProps {
   employee: Employee;

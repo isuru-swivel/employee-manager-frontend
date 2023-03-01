@@ -4,7 +4,7 @@ import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Employee } from "../types";
+import { Employee } from "@/types";
 
 interface EmployeeListViewProps {
   employees: Employee[];
