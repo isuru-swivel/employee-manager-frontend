@@ -5,9 +5,12 @@ import Link from "next/link";
 import { Button, IconButton } from "@mui/material";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import GridViewIcon from "@mui/icons-material/GridView";
-import EmployeeGridView from "@/components/EmployeeGridView";
-import EmployeeListView from "@/components/EmployeeListView";
-import DeleteConfirmationModal from "@/components/DeleteConfirmationModal";
+import {
+  EmployeeGridView,
+  EmployeeListView,
+  DeleteConfirmationModal,
+  Loading,
+} from "@/components";
 import { deleteEmployee } from "@/services/employeeService";
 import toast from "react-hot-toast";
 import {
@@ -71,6 +74,9 @@ const Home = () => {
   const closeConfirm = () => {
     dispatch(resetDeleteConfirm());
   };
+
+  console.log("----------------", loading);
+  if (loading) return <Loading />;
 
   return (
     <React.Fragment>
