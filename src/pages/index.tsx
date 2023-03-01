@@ -75,7 +75,6 @@ const Home = () => {
     dispatch(resetDeleteConfirm());
   };
 
-  console.log("----------------", loading);
   if (loading) return <Loading />;
 
   return (
