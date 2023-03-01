@@ -1,6 +1,6 @@
 import React from "react";
-import EmployeeGridItem from "./EmployeeGridItem";
-import { Employee } from "types";
+import EmployeeGridItem from "@/components/EmployeeGridItem";
+import { Employee } from "@/types";
 
 interface EmployeeGridViewProps {
   employees: Employee[];
