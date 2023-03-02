@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
 import { getAllEmployees } from "@/services/employeeService";
 import { IGetEmployees } from "@/types";
 
@@ -25,7 +26,7 @@ const employeeSlice = createSlice({
   name: "employee",
   initialState,
   reducers: {
-    selectEmployee: (state, action) => ({
+    selectEmployee: (state, action: PayloadAction<any>) => ({
       ...state,
       selectedEmployee: action.payload,
     }),
@@ -56,7 +57,7 @@ const employeeSlice = createSlice({
       state.loading = false;
       state.employees = action.payload;
     });
-    builder.addCase(fetchEmployees.rejected, (state, action) => {
+    builder.addCase(fetchEmployees.rejected, (state) => {
       state.loading = false;
       state.employees = [];
     });

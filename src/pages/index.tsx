@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import Head from "next/head";
+import { useAppDispatch, useAppSelector } from "@/hooks";
 import { fetchEmployees } from "@/features/employee/employeeSlice";
 import Link from "next/link";
 import { Button, IconButton } from "@mui/material";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import GridViewIcon from "@mui/icons-material/GridView";
 import {
+  Loading,
   EmployeeGridView,
   EmployeeListView,
   DeleteConfirmationModal,
-  Loading,
 } from "@/components";
 import { deleteEmployee } from "@/services/employeeService";
 import toast from "react-hot-toast";
@@ -18,7 +19,7 @@ import {
   selectEmployee,
   resetDeleteConfirm,
 } from "@/features/employee/employeeSlice";
-import { Employee } from "@/types";
+import { Employee, IEmployeeState, IGetEmployees } from "@/types";
 
 enum ViewTypes {
   LIST_VIEW = "LIST_VIEW",
@@ -27,18 +28,18 @@ enum ViewTypes {
 
 const Home = () => {
   const [viewType, setViewType] = useState<ViewTypes>(ViewTypes.GRID_VIEW);
-  const [employeeFilter, setEmployeeFilter] = useState({
+  const [employeeFilter, setEmployeeFilter] = useState<IGetEmployees>({
     field: "first_name",
     sort: "asc",
   });
 
   const {
-    employees,
     loading,
+    employees,
     deleteConfirmation: { visible, employeeId },
-  } = useSelector((state) => state.employee);
+  }: IEmployeeState = useAppSelector((state) => state.employee);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(fetchEmployees(employeeFilter));
@@ -53,6 +54,7 @@ const Home = () => {
   };
 
   const handleDeleteEmployee = async () => {
+    if (!employeeId) return;
     try {
       await deleteEmployee(employeeId);
       closeConfirm();
@@ -75,10 +77,35 @@ const Home = () => {
     dispatch(resetDeleteConfirm());
   };
 
+  const getView = () => {
+    switch (viewType) {
+      case ViewTypes.GRID_VIEW:
+        return (
+          <EmployeeGridView
+            employees={employees}
+            setEmployee={setEmployee}
+            openDeleteConfirmModal={openDeleteConfirmModal}
+          />
+        );
+      case ViewTypes.LIST_VIEW:
+        return (
+          <EmployeeListView
+            employees={employees}
+            setEmployee={setEmployee}
+            openDeleteConfirmModal={openDeleteConfirmModal}
+            setEmployeeFilter={setEmployeeFilter}
+          />
+        );
+    }
+  };
+
   if (loading) return <Loading />;
 
   return (
-    <React.Fragment>
+    <div>
+      <Head>
+        <title>Employee Manager</title>
+      </Head>
       <div className="d-flex justify-content-end my-4">
         <IconButton onClick={handleViewTypeChange} className="me-3">
           {viewType === ViewTypes.LIST_VIEW ? (
@@ -91,26 +118,13 @@ const Home = () => {
           <Button variant="contained">Add Employee</Button>
         </Link>
       </div>
-      {viewType === ViewTypes.GRID_VIEW ? (
-        <EmployeeGridView
-          employees={employees}
-          setEmployee={setEmployee}
-          openDeleteConfirmModal={openDeleteConfirmModal}
-        />
-      ) : (
-        <EmployeeListView
-          employees={employees}
-          setEmployee={setEmployee}
-          openDeleteConfirmModal={openDeleteConfirmModal}
-          setEmployeeFilter={setEmployeeFilter}
-        />
-      )}
+      {getView()}
       <DeleteConfirmationModal
         open={visible}
         handleSuccess={handleDeleteEmployee}
         handleClose={closeConfirm}
       />
-    </React.Fragment>
+    </div>
   );
 };
 

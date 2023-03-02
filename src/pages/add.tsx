@@ -1,3 +1,4 @@
+import Head from "next/head";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import EmployeeFormContainer from "@/components/EmployeeFormContainer";
@@ -18,6 +19,9 @@ const AddEmployee = () => {
 
   return (
     <div>
+      <Head>
+        <title>Add Employee</title>
+      </Head>
       <EmployeeFormContainer handleComplete={createEmployee} />
     </div>
   );

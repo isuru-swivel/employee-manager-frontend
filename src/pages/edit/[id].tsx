@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import Head from "next/head";
+import { useAppDispatch, useAppSelector } from "@/hooks";
 import { useRouter } from "next/router";
 import EmployeeFormContainer from "@/components/EmployeeFormContainer";
 import { editEmployee } from "@/services/employeeService";
@@ -8,14 +9,21 @@ import { resetSelectedEmployee } from "@/features/employee/employeeSlice";
 
 const EditEmployee = () => {
   const router = useRouter();
-  const dispatch = useDispatch();
-  const { id } = router.query;
+  const dispatch = useAppDispatch();
+  const id = router.query.id as string;
 
-  const { selectedEmployee } = useSelector((state) => state.employee);
+  const { selectedEmployee } = useAppSelector((state) => state.employee);
 
-  useEffect(() => {
-    return () => dispatch(resetSelectedEmployee());
-  }, []);
+  useEffect(
+    () => () => {
+      return reset();
+    },
+    []
+  );
+
+  const reset = () => {
+    dispatch(resetSelectedEmployee());
+  };
 
   const updateEmployee = async (payload: any) => {
     try {
@@ -28,6 +36,9 @@ const EditEmployee = () => {
 
   return (
     <div>
+      <Head>
+        <title>Edit Employee</title>
+      </Head>
       <EmployeeFormContainer
         handleComplete={updateEmployee}
         employee={selectedEmployee}

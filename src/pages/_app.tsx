@@ -3,7 +3,7 @@ import type { AppProps } from "next/app";
 import AppLayout from "@/layout/AppLayout";
 import { Provider } from "react-redux";
 import { Toaster } from "react-hot-toast";
-import store from "@/store";
+import { store } from "@/store";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (

@@ -1,16 +1,16 @@
-import React from "react";
+import React, { SetStateAction } from "react";
 import Link from "next/link";
 import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Employee } from "@/types";
+import { Employee, IGetEmployees } from "@/types";
 
 interface EmployeeListViewProps {
   employees: Employee[];
   setEmployee: (emp: Employee) => void;
   openDeleteConfirmModal: (empId: string) => void;
-  setEmployeeFilter: (filter: object) => void;
+  setEmployeeFilter: React.Dispatch<SetStateAction<IGetEmployees>>;
 }
 
 const EmployeeListView: React.FC<EmployeeListViewProps> = ({

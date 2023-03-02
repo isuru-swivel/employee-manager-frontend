@@ -55,7 +55,7 @@ const schema = yup.object({
 });
 
 interface EmployeeFormContainerProps {
-  employee?: Employee;
+  employee?: Employee | null;
   handleComplete: (payload: any) => void;
 }
 

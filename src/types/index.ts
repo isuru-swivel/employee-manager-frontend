@@ -12,3 +12,13 @@ export interface IGetEmployees {
   field?: string;
   sort?: string;
 }
+
+export interface IEmployeeState {
+  employees: Employee[] | [];
+  loading: boolean;
+  selectedEmployee: Employee | null;
+  deleteConfirmation: {
+    visible: boolean;
+    employeeId: string | null;
+  };
+}
