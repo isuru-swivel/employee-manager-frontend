@@ -28,6 +28,7 @@ const EditEmployee = () => {
   const updateEmployee = async (payload: any) => {
     try {
       await editEmployee(id, payload);
+      toast.success("Successfully updated");
       await router.push("/");
     } catch (error) {
       toast.error("Something went wrong");
