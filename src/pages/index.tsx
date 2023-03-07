@@ -7,7 +7,6 @@ import { Button, IconButton } from "@mui/material";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import GridViewIcon from "@mui/icons-material/GridView";
 import {
-  Loading,
   EmployeeGridView,
   EmployeeListView,
   DeleteConfirmationModal,
@@ -19,7 +18,8 @@ import {
   selectEmployee,
   resetDeleteConfirm,
 } from "@/features/employee/employeeSlice";
-import { Employee, IEmployeeState, IGetEmployees } from "@/types";
+import { IEmployee, IEmployeeState, IGetEmployees } from "@/types";
+import loading from "@/components/Loading";
 
 enum ViewTypes {
   LIST_VIEW = "LIST_VIEW",
@@ -65,7 +65,7 @@ const Home = () => {
     }
   };
 
-  const setEmployee = (emp: Employee) => {
+  const setEmployee = (emp: IEmployee) => {
     dispatch(selectEmployee(emp));
   };
 
@@ -82,6 +82,7 @@ const Home = () => {
       case ViewTypes.GRID_VIEW:
         return (
           <EmployeeGridView
+            loading={loading}
             employees={employees}
             setEmployee={setEmployee}
             openDeleteConfirmModal={openDeleteConfirmModal}
@@ -90,6 +91,7 @@ const Home = () => {
       case ViewTypes.LIST_VIEW:
         return (
           <EmployeeListView
+            loading={loading}
             employees={employees}
             setEmployee={setEmployee}
             openDeleteConfirmModal={openDeleteConfirmModal}
@@ -98,8 +100,6 @@ const Home = () => {
         );
     }
   };
-
-  if (loading) return <Loading />;
 
   return (
     <div>

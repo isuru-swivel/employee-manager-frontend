@@ -10,15 +10,10 @@ import {
 import Link from "next/link";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Employee } from "@/types";
+import { IEmployeeGridItemProps } from "@/types";
+import { getAvatarUrl } from "@/utils/helpers";
 
-interface EmployeeGridItemProps {
-  employee: Employee;
-  setEmployee: (emp: Employee) => void;
-  openDeleteConfirmModal: (empId: string) => void;
-}
-
-const EmployeeGridItem: React.FC<EmployeeGridItemProps> = ({
+const EmployeeGridItem: React.FC<IEmployeeGridItemProps> = ({
   employee,
   setEmployee,
   openDeleteConfirmModal,
@@ -29,7 +24,7 @@ const EmployeeGridItem: React.FC<EmployeeGridItemProps> = ({
         sx={{ height: 210 }}
         image={
           employee.photo ||
-          `https://ui-avatars.com/api/?name=${employee.first_name}+${employee.last_name}`
+          getAvatarUrl(employee.first_name, employee.last_name)
         }
       />
       <CardContent>

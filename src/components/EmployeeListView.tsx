@@ -1,19 +1,14 @@
-import React, { SetStateAction } from "react";
+import React from "react";
 import Link from "next/link";
 import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Employee, IGetEmployees } from "@/types";
+import { IEmployeeListViewProps } from "@/types";
+import { getAvatarUrl } from "@/utils/helpers";
 
-interface EmployeeListViewProps {
-  employees: Employee[];
-  setEmployee: (emp: Employee) => void;
-  openDeleteConfirmModal: (empId: string) => void;
-  setEmployeeFilter: React.Dispatch<SetStateAction<IGetEmployees>>;
-}
-
-const EmployeeListView: React.FC<EmployeeListViewProps> = ({
+const EmployeeListView: React.FC<IEmployeeListViewProps> = ({
+  loading,
   employees,
   setEmployee,
   openDeleteConfirmModal,
@@ -30,7 +25,7 @@ const EmployeeListView: React.FC<EmployeeListViewProps> = ({
         <img
           src={
             params.row.photo ||
-            `https://ui-avatars.com/api/?name=${params.row.first_name}+${params.row.last_name}`
+            getAvatarUrl(params.row.first_name, params.row.last_name)
           }
           alt=""
           width={130}
@@ -110,6 +105,7 @@ const EmployeeListView: React.FC<EmployeeListViewProps> = ({
         filterMode={"server"}
         sortingMode={"server"}
         sortingOrder={["asc", "desc"]}
+        loading={loading}
       />
     </div>
   );

@@ -1,21 +1,18 @@
 import React from "react";
-import EmployeeGridItem from "@/components/EmployeeGridItem";
-import { Employee } from "@/types";
+import { EmployeeGridItem, Loading } from "@/components";
+import { IEmployeeGridViewProps, IEmployee } from "@/types";
 
-interface EmployeeGridViewProps {
-  employees: Employee[];
-  setEmployee: (emp: Employee) => void;
-  openDeleteConfirmModal: (empId: string) => void;
-}
-
-const EmployeeGridView: React.FC<EmployeeGridViewProps> = ({
+const EmployeeGridView: React.FC<IEmployeeGridViewProps> = ({
+  loading,
   employees,
   setEmployee,
   openDeleteConfirmModal,
 }) => {
+  if (loading) return <Loading />;
+
   return (
     <div className="d-flex flex-wrap justify-content-evenly">
-      {employees?.map((employee: Employee) => (
+      {employees?.map((employee: IEmployee) => (
         <EmployeeGridItem
           key={employee._id}
           employee={employee}
