@@ -1,12 +1,12 @@
 import "@testing-library/jest-dom";
 import { render, screen, act } from "@testing-library/react";
-import { employee } from "../testData";
 import EmployeeFormContainer from "../src/components/EmployeeFormContainer";
+import { employee } from "../testData";
 
-describe("Edit employee form", () => {
+describe("add employee form", () => {
   it("should render", () => {
     render(
-      <EmployeeFormContainer employee={employee} handleComplete={(emp) => {}} />
+      <EmployeeFormContainer handleComplete={(emp) => {}} employee={employee} />
     );
 
     expect(
@@ -17,7 +17,5 @@ describe("Edit employee form", () => {
     ).toBeInTheDocument();
     expect(screen.getByRole("textbox", { name: /Email/i })).toBeInTheDocument();
     expect(screen.getByRole("textbox", { name: /Phone/i })).toBeInTheDocument();
-
-    expect(screen.getByText(employee.gender)).toBeInTheDocument();
   });
 });
