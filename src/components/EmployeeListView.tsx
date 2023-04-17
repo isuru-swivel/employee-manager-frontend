@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
-import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import { GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import { DataTable } from "@/components";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -94,18 +95,11 @@ const EmployeeListView: React.FC<IEmployeeListViewProps> = ({
 
   return (
     <div style={{ height: 750, width: "100%" }}>
-      <DataGrid
-        rows={employees}
-        columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
-        onSortModelChange={handleSort}
-        rowHeight={130}
-        getRowId={(row) => row._id}
-        filterMode={"server"}
-        sortingMode={"server"}
-        sortingOrder={["asc", "desc"]}
+      <DataTable
         loading={loading}
+        columns={columns}
+        rows={employees}
+        handleSort={handleSort}
       />
     </div>
   );

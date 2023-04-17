@@ -19,12 +19,14 @@ const Transition = React.forwardRef(function Transition(
 
 interface DeleteConfirmationModalProps {
   open: boolean;
+  message: string;
   handleClose: () => void;
   handleSuccess: () => void;
 }
 
-const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
+const ConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
   open,
+  message,
   handleClose,
   handleSuccess,
 }) => {
@@ -39,7 +41,7 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
       <DialogTitle>{"Confirm"}</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-slide-description">
-          Do you really want to delete this?
+          {message}
         </DialogContentText>
       </DialogContent>
       <DialogActions>
@@ -50,4 +52,4 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
   );
 };
 
-export default DeleteConfirmationModal;
+export default ConfirmationModal;

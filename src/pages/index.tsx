@@ -12,7 +12,7 @@ import GridViewIcon from "@mui/icons-material/GridView";
 import {
   EmployeeGridView,
   EmployeeListView,
-  DeleteConfirmationModal,
+  ConfirmationModal,
 } from "@/components";
 import {
   confirmDelete,
@@ -120,8 +120,9 @@ const Home = () => {
         </Link>
       </div>
       {getView()}
-      <DeleteConfirmationModal
+      <ConfirmationModal
         open={visible}
+        message={"Do you really want to delete this?"}
         handleSuccess={handleDeleteEmployee}
         handleClose={closeConfirm}
       />

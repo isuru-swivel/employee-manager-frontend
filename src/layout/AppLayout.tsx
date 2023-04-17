@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import Header from "@/components/Header";
+import { Header } from "@/components";
 import type { ReactNode } from "react";
 import { toast } from "react-hot-toast";
 import { useAppSelector, useAppDispatch } from "@/hooks";
@@ -27,7 +27,7 @@ const AppLayout = (props: ILayoutProps) => {
 
   return (
     <>
-      <Header />
+      <Header title={"Employee Manager"} />
       <div className="container">{props.children}</div>
     </>
   );
