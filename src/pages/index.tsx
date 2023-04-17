@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Head from "next/head";
 import { useAppDispatch, useAppSelector } from "@/hooks";
-import { fetchEmployees } from "@/features/employee/employeeSlice";
+import {
+  fetchEmployees,
+  deleteEmployeeById,
+} from "@/features/employee/employeeSlice";
 import Link from "next/link";
 import { Button, IconButton } from "@mui/material";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
@@ -11,15 +14,12 @@ import {
   EmployeeListView,
   DeleteConfirmationModal,
 } from "@/components";
-import { deleteEmployee } from "@/services/employeeService";
-import toast from "react-hot-toast";
 import {
   confirmDelete,
   selectEmployee,
   resetDeleteConfirm,
 } from "@/features/employee/employeeSlice";
 import { IEmployee, IEmployeeState, IGetEmployees } from "@/types";
-import loading from "@/components/Loading";
 
 enum ViewTypes {
   LIST_VIEW = "LIST_VIEW",
@@ -36,6 +36,7 @@ const Home = () => {
   const {
     loading,
     employees,
+    error,
     deleteConfirmation: { visible, employeeId },
   }: IEmployeeState = useAppSelector((state) => state.employee);
 
@@ -44,6 +45,13 @@ const Home = () => {
   useEffect(() => {
     dispatch(fetchEmployees(employeeFilter));
   }, [employeeFilter]);
+
+  useEffect(() => {
+    if (error?.success) {
+      closeConfirm();
+      dispatch(fetchEmployees(employeeFilter));
+    }
+  }, [error]);
 
   const handleViewTypeChange = () => {
     if (viewType === ViewTypes.GRID_VIEW) {
@@ -55,14 +63,7 @@ const Home = () => {
 
   const handleDeleteEmployee = async () => {
     if (!employeeId) return;
-    try {
-      await deleteEmployee(employeeId);
-      closeConfirm();
-      dispatch(fetchEmployees(employeeFilter));
-      toast.success("Successfully deleted");
-    } catch (error) {
-      toast.error("Something went wrong");
-    }
+    dispatch(deleteEmployeeById(employeeId));
   };
 
   const setEmployee = (emp: IEmployee) => {

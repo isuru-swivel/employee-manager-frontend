@@ -3,16 +3,17 @@ import Head from "next/head";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { useRouter } from "next/router";
 import EmployeeFormContainer from "@/components/EmployeeFormContainer";
-import { editEmployee } from "@/services/employeeService";
-import toast from "react-hot-toast";
-import { resetSelectedEmployee } from "@/features/employee/employeeSlice";
+import {
+  updateEmployee,
+  resetSelectedEmployee,
+} from "@/features/employee/employeeSlice";
 
 const EditEmployee = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const id = router.query.id as string;
 
-  const { selectedEmployee } = useAppSelector((state) => state.employee);
+  const { selectedEmployee, error } = useAppSelector((state) => state.employee);
 
   useEffect(
     () => () => {
@@ -21,18 +22,18 @@ const EditEmployee = () => {
     []
   );
 
+  useEffect(() => {
+    if (error?.success) {
+      router.push("/");
+    }
+  }, [error]);
+
   const reset = () => {
     dispatch(resetSelectedEmployee());
   };
 
-  const updateEmployee = async (payload: any) => {
-    try {
-      await editEmployee(id, payload);
-      toast.success("Successfully updated");
-      await router.push("/");
-    } catch (error) {
-      toast.error("Something went wrong");
-    }
+  const handleUpdateEmployee = (payload: any) => {
+    dispatch(updateEmployee({ id, payload }));
   };
 
   return (
@@ -41,7 +42,7 @@ const EditEmployee = () => {
         <title>Edit Employee</title>
       </Head>
       <EmployeeFormContainer
-        handleComplete={updateEmployee}
+        handleComplete={handleUpdateEmployee}
         employee={selectedEmployee}
       />
     </div>

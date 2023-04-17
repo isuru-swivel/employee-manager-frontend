@@ -18,11 +18,9 @@ export interface IGetEmployees {
 export interface IEmployeeState {
   employees: IEmployee[] | [];
   loading: boolean;
+  error: IError | null;
   selectedEmployee: IEmployee | null;
-  deleteConfirmation: {
-    visible: boolean;
-    employeeId: string | null;
-  };
+  deleteConfirmation: IDeleteConfirmation;
 }
 
 export interface IEmployeeListViewProps {
@@ -44,4 +42,14 @@ export interface IEmployeeGridItemProps {
   employee: IEmployee;
   setEmployee: (emp: IEmployee) => void;
   openDeleteConfirmModal: (empId: string) => void;
+}
+
+interface IDeleteConfirmation {
+  visible: boolean;
+  employeeId: string | null;
+}
+
+interface IError {
+  success: boolean;
+  message: string;
 }

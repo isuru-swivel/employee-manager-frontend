@@ -1,11 +1,30 @@
+import { useEffect } from "react";
 import Header from "@/components/Header";
 import type { ReactNode } from "react";
+import { toast } from "react-hot-toast";
+import { useAppSelector, useAppDispatch } from "@/hooks";
+import { resetError } from "@/features/employee/employeeSlice";
 
-export interface LayoutProps {
+export interface ILayoutProps {
   children: ReactNode;
 }
 
-const AppLayout = (props: LayoutProps) => {
+const AppLayout = (props: ILayoutProps) => {
+  const dispatch = useAppDispatch();
+  const { error } = useAppSelector((state) => state.employee);
+
+  useEffect(() => {
+    if (!error) return;
+
+    if (error.success) {
+      toast.success(error.message);
+    } else {
+      toast.error(error.message);
+    }
+
+    dispatch(resetError());
+  }, [error]);
+
   return (
     <>
       <Header />

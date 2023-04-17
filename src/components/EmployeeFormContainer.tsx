@@ -9,6 +9,7 @@ import {
   MenuItem,
   Button,
   TextField,
+  FormHelperText,
 } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -18,7 +19,7 @@ import {
   validatePhoneNumber,
   validateEnglishLetters,
 } from "@/utils/validations";
-import { Employee } from "@/types";
+import { IEmployee } from "@/types";
 
 const schema = yup.object({
   first_name: yup
@@ -41,25 +42,29 @@ const schema = yup.object({
     .label("Last Name"),
   email: yup
     .string()
+    .required()
     .test("validate email", "Invalid Email Address", (value) => {
       if (!value) return true;
       return validateEmail(value);
-    }),
+    })
+    .label("Email"),
   number: yup
     .string()
+    .required()
     .test("validate phone number", "Invalid phone number", (value) => {
       if (!value) return true;
       return validatePhoneNumber(value);
-    }),
-  gender: yup.string(),
+    })
+    .label("Phone number"),
+  gender: yup.string().required().label("Gender"),
 });
 
-interface EmployeeFormContainerProps {
-  employee?: Employee | null;
+interface IEmployeeFormContainerProps {
+  employee?: IEmployee | null;
   handleComplete: (payload: any) => void;
 }
 
-const EmployeeFormContainer: React.FC<EmployeeFormContainerProps> = ({
+const EmployeeFormContainer: React.FC<IEmployeeFormContainerProps> = ({
   employee,
   handleComplete,
 }) => {
@@ -126,16 +131,19 @@ const EmployeeFormContainer: React.FC<EmployeeFormContainerProps> = ({
                   {...register("number")}
                 />
               </FormControl>
-              <FormControl fullWidth>
+              <FormControl fullWidth error={!!errors.gender}>
                 <InputLabel>Gender</InputLabel>
                 <Controller
                   name="gender"
                   control={control}
                   render={({ field }) => (
-                    <Select label="Gender" {...field}>
-                      <MenuItem value={"M"}>M</MenuItem>
-                      <MenuItem value={"F"}>F</MenuItem>
-                    </Select>
+                    <>
+                      <Select label="Gender" {...field}>
+                        <MenuItem value={"M"}>M</MenuItem>
+                        <MenuItem value={"F"}>F</MenuItem>
+                      </Select>
+                      <FormHelperText>{errors.gender?.message}</FormHelperText>
+                    </>
                   )}
                 />
               </FormControl>

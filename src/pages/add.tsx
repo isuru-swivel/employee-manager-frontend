@@ -1,20 +1,24 @@
+import { useEffect } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import toast from "react-hot-toast";
+import { useAppDispatch, useAppSelector } from "@/hooks";
 import EmployeeFormContainer from "@/components/EmployeeFormContainer";
-import { addEmployee } from "@/services/employeeService";
+import { addNewEmployee } from "@/features/employee/employeeSlice";
 
 const AddEmployee = () => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
-  const createEmployee = async (payload: any) => {
-    try {
-      await addEmployee(payload);
-      toast.success("Successfully added");
-      await router.push("/");
-    } catch (error) {
-      toast.error("Something went wrong");
+  const { error } = useAppSelector((state) => state.employee);
+
+  useEffect(() => {
+    if (error?.success) {
+      router.push("/");
     }
+  }, [error]);
+
+  const createEmployee = (payload: any) => {
+    dispatch(addNewEmployee(payload));
   };
 
   return (
