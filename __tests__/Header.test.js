@@ -4,7 +4,7 @@ import { render, screen } from "@testing-library/react";
 
 describe("header", () => {
   it("should render", () => {
-    render(<Header />);
+    render(<Header title={"Employee Manager"} />);
     const headerElement = screen.getByText("Employee Manager");
     expect(headerElement).toBeInTheDocument();
   });
