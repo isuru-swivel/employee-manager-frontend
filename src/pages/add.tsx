@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import Head from "next/head";
 import { useRouter } from "next/router";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { EmployeeFormContainer, PageHeader } from "@/components";
@@ -12,6 +11,7 @@ const AddEmployee = () => {
   const { error } = useAppSelector((state) => state.employee);
 
   useEffect(() => {
+    //redirect to list page after adding a new employee
     if (error?.success) {
       router.push("/");
     }
@@ -24,9 +24,6 @@ const AddEmployee = () => {
   return (
     <div>
       <PageHeader title={"Add Employee"} />
-      <Head>
-        <title>Add Employee</title>
-      </Head>
       <EmployeeFormContainer handleComplete={createEmployee} />
     </div>
   );

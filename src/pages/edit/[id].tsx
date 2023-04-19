@@ -22,12 +22,14 @@ const EditEmployee = () => {
   );
 
   useEffect(() => {
+    //redirect to list page after update
     if (error?.success) {
       router.push("/");
     }
   }, [error]);
 
   const reset = () => {
+    //clear selected employee details
     dispatch(resetSelectedEmployee());
   };
 
