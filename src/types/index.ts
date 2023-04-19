@@ -53,3 +53,12 @@ interface IError {
   success: boolean;
   message: string;
 }
+
+export interface IEmployeeFormContainerProps {
+  employee?: IEmployee | null;
+  handleComplete: (payload: any) => void;
+}
+
+export interface IPageHeaderProps {
+  title: string;
+}

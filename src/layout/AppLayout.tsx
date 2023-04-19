@@ -27,7 +27,7 @@ const AppLayout = (props: ILayoutProps) => {
 
   return (
     <>
-      <Header title={"Employee Manager"} />
+      <Header title={"Employee Manager"} color={"primary"} />
       <div className="container">{props.children}</div>
     </>
   );

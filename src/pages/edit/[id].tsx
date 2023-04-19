@@ -1,8 +1,7 @@
 import { useEffect } from "react";
-import Head from "next/head";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { useRouter } from "next/router";
-import EmployeeFormContainer from "@/components/EmployeeFormContainer";
+import { PageHeader, EmployeeFormContainer } from "@/components";
 import {
   updateEmployee,
   resetSelectedEmployee,
@@ -38,9 +37,7 @@ const EditEmployee = () => {
 
   return (
     <div>
-      <Head>
-        <title>Edit Employee</title>
-      </Head>
+      <PageHeader title={"Edit Employee"} />
       <EmployeeFormContainer
         handleComplete={handleUpdateEmployee}
         employee={selectedEmployee}

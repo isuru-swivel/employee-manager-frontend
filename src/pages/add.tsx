@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useAppDispatch, useAppSelector } from "@/hooks";
-import EmployeeFormContainer from "@/components/EmployeeFormContainer";
+import { EmployeeFormContainer, PageHeader } from "@/components";
 import { addNewEmployee } from "@/features/employee/employeeSlice";
 
 const AddEmployee = () => {
@@ -23,6 +23,7 @@ const AddEmployee = () => {
 
   return (
     <div>
+      <PageHeader title={"Add Employee"} />
       <Head>
         <title>Add Employee</title>
       </Head>

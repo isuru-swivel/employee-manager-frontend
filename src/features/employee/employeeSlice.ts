@@ -32,7 +32,7 @@ export const addNewEmployee = createAsyncThunk(
   async (payload: any, { rejectWithValue }) => {
     try {
       return await addEmployee(payload);
-    } catch (e) {
+    } catch (e: any) {
       return rejectWithValue(e.response.data.message);
     }
   }
@@ -43,7 +43,7 @@ export const updateEmployee = createAsyncThunk(
   async (params: { id: string; payload: any }, { rejectWithValue }) => {
     try {
       return await editEmployee(params.id, params.payload);
-    } catch (e) {
+    } catch (e: any) {
       return rejectWithValue(e.response.data.message);
     }
   }
@@ -54,7 +54,7 @@ export const deleteEmployeeById = createAsyncThunk(
   async (empId: string, { rejectWithValue }) => {
     try {
       return await deleteEmployee(empId);
-    } catch (e) {
+    } catch (e: any) {
       return rejectWithValue(e.response.data.message);
     }
   }
@@ -106,6 +106,7 @@ const employeeSlice = createSlice({
 
     builder.addCase(addNewEmployee.fulfilled, (state, action) => {
       state.loading = false;
+      state.error = { success: true, message: "Successfully added" };
     });
     builder.addCase(
       addNewEmployee.rejected,
@@ -117,6 +118,7 @@ const employeeSlice = createSlice({
 
     builder.addCase(updateEmployee.fulfilled, (state) => {
       state.loading = false;
+      state.error = { success: true, message: "Successfully updated" };
     });
     builder.addCase(
       updateEmployee.rejected,
@@ -128,6 +130,7 @@ const employeeSlice = createSlice({
 
     builder.addCase(deleteEmployeeById.fulfilled, (state) => {
       state.loading = false;
+      state.error = { success: true, message: "Successfully deleted" };
     });
     builder.addCase(
       deleteEmployeeById.rejected,

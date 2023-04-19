@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Head from "next/head";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import {
   fetchEmployees,
@@ -13,6 +12,7 @@ import {
   EmployeeGridView,
   EmployeeListView,
   ConfirmationModal,
+  PageHeader,
 } from "@/components";
 import {
   confirmDelete,
@@ -47,6 +47,7 @@ const Home = () => {
   }, [employeeFilter]);
 
   useEffect(() => {
+    //fetch employee list after delete
     if (error?.success) {
       closeConfirm();
       dispatch(fetchEmployees(employeeFilter));
@@ -71,6 +72,7 @@ const Home = () => {
   };
 
   const openDeleteConfirmModal = (empId: string) => {
+    //show delete confirmation modal
     dispatch(confirmDelete(empId));
   };
 
@@ -104,9 +106,7 @@ const Home = () => {
 
   return (
     <div>
-      <Head>
-        <title>Employee Manager</title>
-      </Head>
+      <PageHeader title={"Employee Manager"} />
       <div className="d-flex justify-content-end my-4">
         <IconButton onClick={handleViewTypeChange} className="me-3">
           {viewType === ViewTypes.LIST_VIEW ? (

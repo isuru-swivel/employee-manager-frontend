@@ -19,7 +19,7 @@ import {
   validatePhoneNumber,
   validateEnglishLetters,
 } from "@/utils/validations";
-import { IEmployee } from "@/types";
+import { IEmployeeFormContainerProps } from "@/types";
 
 const schema = yup.object({
   first_name: yup
@@ -58,11 +58,6 @@ const schema = yup.object({
     .label("Phone number"),
   gender: yup.string().required().label("Gender"),
 });
-
-interface IEmployeeFormContainerProps {
-  employee?: IEmployee | null;
-  handleComplete: (payload: any) => void;
-}
 
 const EmployeeFormContainer: React.FC<IEmployeeFormContainerProps> = ({
   employee,

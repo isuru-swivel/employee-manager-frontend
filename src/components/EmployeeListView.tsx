@@ -100,6 +100,7 @@ const EmployeeListView: React.FC<IEmployeeListViewProps> = ({
         columns={columns}
         rows={employees}
         handleSort={handleSort}
+        rowHeight={130}
       />
     </div>
   );
