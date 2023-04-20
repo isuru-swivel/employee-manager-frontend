@@ -3,6 +3,9 @@ import { useAppDispatch, useAppSelector } from "@/hooks";
 import {
   fetchEmployees,
   deleteEmployeeById,
+  confirmDelete,
+  selectEmployee,
+  resetDeleteConfirm,
 } from "@/features/employee/employeeSlice";
 import Link from "next/link";
 import { Button, IconButton } from "@mui/material";
@@ -14,11 +17,6 @@ import {
   ConfirmationModal,
   PageHeader,
 } from "@/components";
-import {
-  confirmDelete,
-  selectEmployee,
-  resetDeleteConfirm,
-} from "@/features/employee/employeeSlice";
 import { IEmployee, IEmployeeState, IGetEmployees } from "@/types";
 
 enum ViewTypes {

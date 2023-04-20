@@ -1,7 +1,7 @@
 import { isValidPhoneNumber } from "libphonenumber-js";
 
-const emailRegex = new RegExp("^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$");
-const alphabetRegex = new RegExp("^[A-Za-z]+$");
+const emailRegex = /^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$/;
+const alphabetRegex = /^[A-Za-z]+$/;
 
 export const validateEmail = (email: string): boolean => {
   return emailRegex.test(email);
