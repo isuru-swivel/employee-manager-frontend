@@ -44,7 +44,6 @@ const schema = yup.object({
     .string()
     .required()
     .test("validate email", "Invalid Email Address", (value) => {
-      if (!value) return true;
       return validateEmail(value);
     })
     .label("Email"),
@@ -52,7 +51,6 @@ const schema = yup.object({
     .string()
     .required()
     .test("validate phone number", "Invalid phone number", (value) => {
-      if (!value) return true;
       return validatePhoneNumber(value);
     })
     .label("Phone number"),

@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import {
-  fetchEmployees,
   deleteEmployeeById,
   confirmDelete,
   selectEmployee,
@@ -17,7 +16,7 @@ import {
   ConfirmationModal,
   PageHeader,
 } from "@/components";
-import { IEmployee, IEmployeeState, IGetEmployees } from "@/types";
+import { IEmployee, IEmployeeState } from "@/types";
 
 enum ViewTypes {
   LIST_VIEW = "LIST_VIEW",
@@ -26,31 +25,13 @@ enum ViewTypes {
 
 const Home = () => {
   const [viewType, setViewType] = useState<ViewTypes>(ViewTypes.GRID_VIEW);
-  const [employeeFilter, setEmployeeFilter] = useState<IGetEmployees>({
-    field: "first_name",
-    sort: "asc",
-  });
-
   const {
     loading,
     employees,
-    error,
     deleteConfirmation: { visible, employeeId },
   }: IEmployeeState = useAppSelector((state) => state.employee);
 
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(fetchEmployees(employeeFilter));
-  }, [employeeFilter]);
-
-  useEffect(() => {
-    //fetch employee list after delete
-    if (error?.success) {
-      closeConfirm();
-      dispatch(fetchEmployees(employeeFilter));
-    }
-  }, [error]);
 
   const handleViewTypeChange = () => {
     if (viewType === ViewTypes.GRID_VIEW) {
@@ -62,7 +43,10 @@ const Home = () => {
 
   const handleDeleteEmployee = async () => {
     if (!employeeId) return;
-    dispatch(deleteEmployeeById(employeeId));
+    dispatch(deleteEmployeeById(employeeId)).then(() => {
+      //close delete confirmation modal after delete
+      closeConfirm();
+    });
   };
 
   const setEmployee = (emp: IEmployee) => {
@@ -75,6 +59,7 @@ const Home = () => {
   };
 
   const closeConfirm = () => {
+    //close delete confirmation modal
     dispatch(resetDeleteConfirm());
   };
 
@@ -96,14 +81,13 @@ const Home = () => {
             employees={employees}
             setEmployee={setEmployee}
             openDeleteConfirmModal={openDeleteConfirmModal}
-            setEmployeeFilter={setEmployeeFilter}
           />
         );
     }
   };
 
   return (
-    <div>
+    <>
       <PageHeader title={"Employee Manager"} />
       <div className="d-flex justify-content-end my-4">
         <IconButton onClick={handleViewTypeChange} className="me-3">
@@ -124,7 +108,7 @@ const Home = () => {
         handleSuccess={handleDeleteEmployee}
         handleClose={closeConfirm}
       />
-    </div>
+    </>
   );
 };
 

@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import { render, screen, act } from "@testing-library/react";
-import EmployeeFormContainer from "../src/components/EmployeeFormContainer";
+import EmployeeFormContainer from "../src/components/organisms/EmployeeFormContainer";
 import { employee } from "../testData";
 
 describe("add employee form", () => {

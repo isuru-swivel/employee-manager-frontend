@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 import { render, screen, act } from "@testing-library/react";
 import { employee } from "../testData";
-import EmployeeFormContainer from "../src/components/EmployeeFormContainer";
+import EmployeeFormContainer from "../src/components/organisms/EmployeeFormContainer";
 
 describe("Edit employee form", () => {
   it("should render", () => {

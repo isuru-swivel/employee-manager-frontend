@@ -13,7 +13,6 @@ const EmployeeListView: React.FC<IEmployeeListViewProps> = ({
   employees,
   setEmployee,
   openDeleteConfirmModal,
-  setEmployeeFilter,
 }) => {
   const columns: GridColDef[] = [
     {
@@ -37,30 +36,35 @@ const EmployeeListView: React.FC<IEmployeeListViewProps> = ({
       field: "first_name",
       headerName: "First name",
       width: 160,
+      sortable: false,
       disableColumnMenu: true,
     },
     {
       field: "last_name",
       headerName: "Last name",
       width: 160,
+      sortable: false,
       disableColumnMenu: true,
     },
     {
       field: "email",
       headerName: "Email",
       width: 250,
+      sortable: false,
       disableColumnMenu: true,
     },
     {
       field: "number",
       headerName: "Phone",
       width: 130,
+      sortable: false,
       disableColumnMenu: true,
     },
     {
       field: "gender",
       headerName: "Gender",
       width: 100,
+      sortable: false,
       disableColumnMenu: true,
       valueGetter: (params: GridValueGetterParams) =>
         params.row.gender === "M" ? "Male" : "Female",
@@ -89,17 +93,12 @@ const EmployeeListView: React.FC<IEmployeeListViewProps> = ({
     },
   ];
 
-  const handleSort = (sort: any) => {
-    setEmployeeFilter(sort[0]);
-  };
-
   return (
     <div style={{ height: 750, width: "100%" }}>
       <DataTable
         loading={loading}
         columns={columns}
         rows={employees}
-        handleSort={handleSort}
         rowHeight={130}
       />
     </div>

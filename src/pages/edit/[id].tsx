@@ -1,6 +1,5 @@
-import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "@/hooks";
 import { useRouter } from "next/router";
+import { useAppDispatch, useAppSelector } from "@/hooks";
 import { PageHeader, EmployeeFormContainer } from "@/components";
 import {
   updateEmployee,
@@ -12,29 +11,16 @@ const EditEmployee = () => {
   const dispatch = useAppDispatch();
   const id = router.query.id as string;
 
-  const { selectedEmployee, error } = useAppSelector((state) => state.employee);
-
-  useEffect(
-    () => () => {
-      return reset();
-    },
-    []
-  );
-
-  useEffect(() => {
-    //redirect to list page after update
-    if (error?.success) {
-      router.push("/");
-    }
-  }, [error]);
-
-  const reset = () => {
-    //clear selected employee details
-    dispatch(resetSelectedEmployee());
-  };
+  const { selectedEmployee } = useAppSelector((state) => state.employee);
 
   const handleUpdateEmployee = (payload: any) => {
-    dispatch(updateEmployee({ id, payload }));
+    dispatch(updateEmployee({ id, payload })).then(() => {
+      //reset selected employee details after update
+      dispatch(resetSelectedEmployee());
+
+      //redirect to list page after update
+      router.push("/");
+    });
   };
 
   return (

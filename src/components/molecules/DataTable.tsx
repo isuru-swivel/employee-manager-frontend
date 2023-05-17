@@ -5,7 +5,6 @@ interface IDataTableProps {
   rows: any[];
   columns: GridColDef[];
   loading: boolean;
-  handleSort: (sort: any) => void;
   pageSize?: number;
   rowsPerPage?: number;
   rowHeight?: number;
@@ -14,7 +13,6 @@ interface IDataTableProps {
 const DataTable: React.FC<IDataTableProps> = ({
   rows,
   columns,
-  handleSort,
   loading,
   pageSize = 5,
   rowsPerPage = 5,
@@ -26,12 +24,8 @@ const DataTable: React.FC<IDataTableProps> = ({
       columns={columns}
       pageSize={pageSize}
       rowsPerPageOptions={[rowsPerPage]}
-      onSortModelChange={handleSort}
       rowHeight={rowHeight}
       getRowId={(row) => row._id}
-      filterMode={"server"}
-      sortingMode={"server"}
-      sortingOrder={["asc", "desc"]}
       loading={loading}
     />
   );

@@ -1,4 +1,4 @@
-import EmployeeGridItem from "../src/components/EmployeeGridItem";
+import EmployeeGridItem from "../src/components/organisms/EmployeeGridItem";
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import { employee } from "../testData";

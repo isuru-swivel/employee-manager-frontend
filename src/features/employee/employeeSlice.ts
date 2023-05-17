@@ -1,12 +1,12 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
-  getAllEmployees,
   addEmployee,
   deleteEmployee,
   editEmployee,
+  getAllEmployees,
 } from "@/services/employeeService";
-import { IGetEmployees, IEmployeeState } from "@/types";
+import { IEmployeeState } from "@/types";
 
 const initialState: IEmployeeState = {
   employees: [],
@@ -21,9 +21,9 @@ const initialState: IEmployeeState = {
 
 export const fetchEmployees = createAsyncThunk(
   "employee/fetchEmployees",
-  async (filters: IGetEmployees) => {
-    const response = await getAllEmployees(filters);
-    return response.data;
+  async () => {
+    const { data } = await getAllEmployees();
+    return data;
   }
 );
 
@@ -31,7 +31,8 @@ export const addNewEmployee = createAsyncThunk(
   "employee/addNewEmployee",
   async (payload: any, { rejectWithValue }) => {
     try {
-      return await addEmployee(payload);
+      const { data } = await addEmployee(payload);
+      return data;
     } catch (e: any) {
       return rejectWithValue(e.response.data.message);
     }
@@ -42,7 +43,8 @@ export const updateEmployee = createAsyncThunk(
   "employee/updateEmployee",
   async (params: { id: string; payload: any }, { rejectWithValue }) => {
     try {
-      return await editEmployee(params.id, params.payload);
+      const { data } = await editEmployee(params.id, params.payload);
+      return data;
     } catch (e: any) {
       return rejectWithValue(e.response.data.message);
     }
@@ -53,7 +55,8 @@ export const deleteEmployeeById = createAsyncThunk(
   "employee/deleteEmployeeById",
   async (empId: string, { rejectWithValue }) => {
     try {
-      return await deleteEmployee(empId);
+      await deleteEmployee(empId);
+      return empId;
     } catch (e: any) {
       return rejectWithValue(e.response.data.message);
     }
@@ -92,53 +95,68 @@ const employeeSlice = createSlice({
     }),
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchEmployees.pending, (state) => {
-      state.loading = true;
-    });
-    builder.addCase(fetchEmployees.fulfilled, (state, action) => {
-      state.loading = false;
-      state.employees = action.payload;
-    });
-    builder.addCase(fetchEmployees.rejected, (state) => {
-      state.loading = false;
-      state.employees = [];
-    });
-
-    builder.addCase(addNewEmployee.fulfilled, (state, action) => {
-      state.loading = false;
-      state.error = { success: true, message: "Successfully added" };
-    });
-    builder.addCase(
-      addNewEmployee.rejected,
-      (state, action: PayloadAction<any>) => {
+    //get employees
+    builder
+      .addCase(fetchEmployees.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchEmployees.fulfilled, (state, action) => {
         state.loading = false;
-        state.error = { success: false, message: action.payload };
-      }
-    );
-
-    builder.addCase(updateEmployee.fulfilled, (state) => {
-      state.loading = false;
-      state.error = { success: true, message: "Successfully updated" };
-    });
-    builder.addCase(
-      updateEmployee.rejected,
-      (state, action: PayloadAction<any>) => {
+        state.employees = action.payload;
+      })
+      .addCase(fetchEmployees.rejected, (state) => {
         state.loading = false;
-        state.error = { success: false, message: action.payload };
-      }
-    );
+      });
 
-    builder.addCase(deleteEmployeeById.fulfilled, (state) => {
-      state.loading = false;
-      state.error = { success: true, message: "Successfully deleted" };
-    });
-    builder.addCase(
-      deleteEmployeeById.rejected,
-      (state, action: PayloadAction<any>) => {
+    //add employee
+    builder
+      .addCase(addNewEmployee.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(addNewEmployee.fulfilled, (state, action) => {
         state.loading = false;
-        state.error = { success: false, message: action.payload };
-      }
-    );
+        state.employees = [...state.employees, action.payload];
+      })
+      .addCase(addNewEmployee.rejected, (state, action: PayloadAction<any>) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+
+    //update employee
+    builder
+      .addCase(updateEmployee.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateEmployee.fulfilled, (state, action) => {
+        state.loading = false;
+        const employees = state.employees.filter(
+          (employee) => employee._id !== action.payload?._id
+        );
+        state.employees = [...employees, action.payload];
+      })
+      .addCase(updateEmployee.rejected, (state, action: PayloadAction<any>) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+
+    //delete employee
+    builder
+      .addCase(deleteEmployeeById.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteEmployeeById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.employees = state.employees.filter(
+          (employee) => employee._id !== action.payload
+        );
+      })
+      .addCase(
+        deleteEmployeeById.rejected,
+        (state, action: PayloadAction<any>) => {
+          state.loading = false;
+          state.error = action.payload;
+        }
+      );
   },
 });
 

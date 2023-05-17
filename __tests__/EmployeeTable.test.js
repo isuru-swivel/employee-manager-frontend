@@ -1,4 +1,4 @@
-import EmployeeListView from "../src/components/EmployeeListView";
+import EmployeeListView from "../src/components/templates/EmployeeListView";
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import { employee } from "../testData";
