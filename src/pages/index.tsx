@@ -50,6 +50,7 @@ const Home = () => {
   };
 
   const setEmployee = (emp: IEmployee) => {
+    //set employee details which need to be edited in redux store
     dispatch(selectEmployee(emp));
   };
 

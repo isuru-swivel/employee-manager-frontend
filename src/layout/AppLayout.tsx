@@ -10,6 +10,7 @@ const AppLayout = (props: PropsWithChildren) => {
 
   useEffect(() => {
     if (!error) return;
+    //if error, show the alert
     toast.error(error);
 
     //reset error after showing alert

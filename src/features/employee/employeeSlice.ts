@@ -67,14 +67,17 @@ const employeeSlice = createSlice({
   name: "employee",
   initialState,
   reducers: {
+    //set selected employee details
     selectEmployee: (state, action: PayloadAction<any>) => ({
       ...state,
       selectedEmployee: action.payload,
     }),
+    //remove selected employee details
     resetSelectedEmployee: (state) => ({
       ...state,
       selectedEmployee: null,
     }),
+    //show delete confirmation dialog
     confirmDelete: (state, action) => ({
       ...state,
       deleteConfirmation: {
@@ -82,6 +85,7 @@ const employeeSlice = createSlice({
         employeeId: action.payload,
       },
     }),
+    //hide delete confirmation dialog
     resetDeleteConfirm: (state) => ({
       ...state,
       deleteConfirmation: {
@@ -89,6 +93,7 @@ const employeeSlice = createSlice({
         employeeId: null,
       },
     }),
+    //remove error message
     resetError: (state) => ({
       ...state,
       error: null,
